@@ -10,3 +10,13 @@
    <li>node app.js</li>
    <li>浏览器打开 http://localhost:3000</li>
 </ul>
+
+<h3>功能描述</h3>
+<ul>
+   <li>城市自主定位</li>
+   <li>地址搜索和设置</li>
+   <li>登陆</li>
+   <li>签到</li>
+   <li>注销</li>
+   <li>cookie过期跳转登陆</li>
+</ul>
