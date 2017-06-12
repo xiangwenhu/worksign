@@ -19,4 +19,5 @@
    <li>签到</li>
    <li>注销</li>
    <li>cookie过期跳转登陆</li>
+   <li>支持移动端</li>
 </ul>
