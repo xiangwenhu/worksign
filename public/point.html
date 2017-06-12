@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>选择地址</title>
+    <meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+</head>
+
+<body>
+
+    <p id='defaultCity'></p>
+    <p><input id='address' value="博彦科技大厦" onkeydown="executeSearch(this)"><input id='btnSearch' type="button" value='搜索' disabled></p>
+
+    <ul id='list'>
+    </ul>
+
+</body>
+<script src="cookie.js"></script>
+
+<script>
+    let city = '全国'
+
+    const AK_KEY = 'KPx7nDiVnDGqlWjCnZ6cd6rAsimIpzV3',
+        //API_DOMAIN = 'http://api.map.baidu.com'
+        API_DOMAIN = '/bapi'
+
+    //定位城市
+    async function locate() {
+        return fetch(`${API_DOMAIN}/location/ip?ak=${AK_KEY}`).then(res => res.json())
+    }
+
+    //搜索
+    async function search(keyWords, city) {
+        //return fetch(`${API_DOMAIN}/place/v2/search?q=${encodeURIComponent(keyWords)}&region=${encodeURIComponent(city)}&output=json&ak=${AK_KEY}`).then(res=>res.json())
+        return fetch(`${API_DOMAIN}/place/v2/suggestion?q=${encodeURIComponent(keyWords)}&region=${encodeURIComponent(city)}&city_limit=true&output=json&ak=${AK_KEY}`).then(res => res.json())
+
+    }
+
+    //初始化
+    async function init() {
+        let result = await locate()
+        city = result.content.address_detail.city
+        defaultCity.innerText = city
+        btnSearch.removeAttribute('disabled')
+    }
+
+    //搜索
+    btnSearch.addEventListener('click', async () => {
+        let results = await search(address.value, city)
+        render(results.result)
+    })
+
+    //执行搜索
+    async function executeSearch() {
+        var ev = window.event || arguments.callee.caller.arguments[0];
+        if (ev.keyCode == 13) {
+            let results = await search(address.value, city)
+            render(results.result)
+        }
+    }
+
+    //渲染
+    function render(results) {
+        list.innerHTML = ''
+        let htmlStr = ''
+        results.forEach(v => {
+            htmlStr += `<li data-lat = "${v.location.lat}" data-lng = "${v.location.lng}" data-loc='${v.name}|${v.district}'>${v.name} <br/>${v.district}</li>`
+        })
+        list.innerHTML = htmlStr
+    }
+
+    //选择地址
+    list.addEventListener('click', ev => {
+        if (ev.target.tagName == 'LI') {
+            let el = ev.target
+            localStorage.setItem('lat', el.getAttribute('data-lat'));
+            localStorage.setItem('lng', el.getAttribute('data-lng'));
+            localStorage.setItem('loc', el.getAttribute('data-loc'))
+            console.log(localStorage)
+
+            window.location.href = '/index.html'
+        }
+    })
+
+    init()
+
+</script>
+
+</html>

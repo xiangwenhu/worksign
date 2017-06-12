@@ -1,0 +1,37 @@
+// 短信验证码  POST
+https://e.xinrenxinshi.com/site/ajax-send-sms-code/login
+
+Origin:https://e.xinrenxinshi.com
+Referer:https://e.xinrenxinshi.com/index
+
+mobile:
+
+
+
+//登陆
+https://e.xinrenxinshi.com/site/ajax-login
+
+Referer:https://e.xinrenxinshi.com/index
+
+mobile:
+verify_code:123456
+verify_code_id:108097
+type:1
+
+
+// cesf token
+https://e.xinrenxinshi.com/env/ajax-common
+Cookie:QJYDSID=009c6397c5cb464284639ff0e8209918
+Referer:https://e.xinrenxinshi.com/index
+
+
+//经纬度查询
+https://api.map.baidu.com/location/ip?qt=loc&coor=bd09ll&ak=Er8iGG4UMfSd3Ckuc6w8C56peI4ge1Ih&timeout=10000&callback=_cbk54880
+
+
+//签到
+https://e.xinrenxinshi.com/attendance/ajax-sign
+longitude:116.39125750387659
+latitude:39.90714260173349
+
+
