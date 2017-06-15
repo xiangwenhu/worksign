@@ -37,10 +37,26 @@
 
     }
 
+    function locate2() {
+
+        return new Promise((resolve, reject) => {
+            let scriptEl = document.createElement('script')
+            scriptEl.src = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js'
+            document.body.appendChild(scriptEl)
+            scriptEl.onload = function () {
+                //var remote_ip_info = {"ret":1,"start":-1,"end":-1,"country":"\u4e2d\u56fd","province":"\u5317\u4eac","city":"\u5317\u4eac","district":"","isp":"","type":"","desc":""};
+                resolve(remote_ip_info)
+            }
+        })
+
+    }
+
+
+
     //初始化
     async function init() {
-        let result = await locate()
-        city = result.content.address_detail.city
+        let result = await locate2()
+        city = result.city + '市'
         defaultCity.innerText = city
         btnSearch.removeAttribute('disabled')
     }
@@ -65,7 +81,9 @@
         list.innerHTML = ''
         let htmlStr = ''
         results.forEach(v => {
-            htmlStr += `<li data-lat = "${v.location.lat}" data-lng = "${v.location.lng}" data-loc='${v.name}|${v.district}'>${v.name} <br/>${v.district}</li>`
+            if (v.location) {
+                htmlStr += `<li data-lat = "${v.location.lat}" data-lng = "${v.location.lng}" data-loc='${v.name}|${v.district}'>${v.name} <br/>${v.district}</li>`
+            }
         })
         list.innerHTML = htmlStr
     }
