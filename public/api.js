@@ -69,49 +69,50 @@ resultDemo = {
 
 //签到
 async function sign(longitude, latitude, crsfToken) {
-    var fd = new FormData();
-    fd.append('longitude', longitude);
-    fd.append('latitude', latitude);
 
     return fetch('/api/attendance/ajax-sign', {
         method: 'POST',
         headers: {
             'Origin': 'https://e.xinrenxinshi.com',
             'Referer': 'https://e.xinrenxinshi.com/index',
-            'X-CSRF-TOKEN': crsfToken
+            'X-CSRF-TOKEN': crsfToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: fd
+        body: JSON.stringify({
+            longitude, latitude
+        })
     }).then(res => res.json())
 }
 
 
 
 //取Cookie的值  
-function getCookie(name) {  
-    var arg = name + "=";  
-    var alen = arg.length;  
-    var clen = document.cookie.length;  
-    var i = 0;  
-    while (i < clen) {  
-        var j = i + alen;  
-        if (document.cookie.substring(i, j) == arg) return getCookieVal(j);  
-        i = document.cookie.indexOf(" ", i) + 1;  
-        if (i == 0) break;  
-    }  
-    return null;  
-}  
- //写入到Cookie  
+function getCookie(name) {
+    var arg = name + "=";
+    var alen = arg.length;
+    var clen = document.cookie.length;
+    var i = 0;
+    while (i < clen) {
+        var j = i + alen;
+        if (document.cookie.substring(i, j) == arg) return getCookieVal(j);
+        i = document.cookie.indexOf(" ", i) + 1;
+        if (i == 0) break;
+    }
+    return null;
+}
+//写入到Cookie  
 //name:cookie名称  value:cookie值   
-function setCookie(name, value) {  
-    var Days = 30;  
-    var exp = new Date();  
+function setCookie(name, value) {
+    var Days = 30;
+    var exp = new Date();
     exp.setTime(exp.getTime() + 60 * 2000);//过期时间 2分钟  
-    document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();  
-}  
-  
-function getCookieVal(offset) {  
-    var endstr = document.cookie.indexOf(";", offset);  
-    if (endstr == -1) endstr = document.cookie.length;  
-    return unescape(document.cookie.substring(offset, endstr));  
+    document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+}
+
+function getCookieVal(offset) {
+    var endstr = document.cookie.indexOf(";", offset);
+    if (endstr == -1) endstr = document.cookie.length;
+    return unescape(document.cookie.substring(offset, endstr));
 }  

@@ -56,7 +56,7 @@
 
                 //更新cookie过期时间，设置7天过期
                 let QJYDSID = Cookies.get('QJYDSID')
-                Cookies.remove('QJYDSID')                
+                Cookies.remove('QJYDSID')
                 Cookies.set('QJYDSID', QJYDSID, { expires: 7 })
 
                 //保存当前登陆手机号码
@@ -67,7 +67,7 @@
 
                 //显示登陆状态，设置的地址等
                 setPanelInfo()
-                
+
                 //告知登陆成功
                 alert(result.message || '登陆成功')
 
@@ -95,7 +95,11 @@
 
     //签到
     btnSign.addEventListener('click', () => {
-        executeSign()
+        try {
+            executeSign()
+        } catch (err) {
+            message.innerText = `未知异常：` + JSON.stringify(err)
+        }
     })
 
     //执行打卡
@@ -153,7 +157,7 @@
             lat: pp2[1]
         }
     }
-    
+
     //设置登陆状态，手机号码，经纬度等信息
     function setPanelInfo() {
         var qjydsid = getCookie('QJYDSID')
@@ -161,7 +165,7 @@
         rec_phone.innerText = localStorage.getItem('phone') || '' //登陆的手机号码
         rec_loc.innerText = localStorage.getItem('loc') || ''     //当前保存的地址
         rec_geoLoc.innerText = (localStorage.getItem('lng') || '') + ',' + (localStorage.getItem('lat') || '')  //当前保存的经纬度信息
-        btnLogout.style.display =  qjydsid ? 'inline' :'none'  //登出按钮
+        btnLogout.style.display = qjydsid ? 'inline' : 'none'  //登出按钮
     }
 
 
