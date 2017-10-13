@@ -8,7 +8,7 @@
 <ul>
    <li>npm install</li>
    <li>node app.js</li>
-   <li>浏览器打开 http://localhost:3000</li>
+   <li>浏览器打开 http://localhost:8003</li>
 </ul>
 
 <h3>功能描述</h3>
