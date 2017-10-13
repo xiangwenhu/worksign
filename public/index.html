@@ -15,6 +15,7 @@
     <div>
 
         <h3 style="display:inline">用户信息：</h3> <input type="button" id='btnLogout' style="display:none" value="登出">
+        <a href="history.html" style="float:right">历史记录</a> 
         <p>登陆状态信息：<span id='rec_status'></span>|<span id='rec_phone'></span></p>
         <p>用户位置信息:<span id='rec_loc'></span>|<span id='rec_geoLoc'></span><a href='/point.html' style="padding-left:5px;text-decoration: none;">更改位置</a></p>
     </div>
@@ -57,7 +58,7 @@
                 //更新cookie过期时间，设置7天过期
                 let QJYDSID = Cookies.get('QJYDSID')
                 Cookies.remove('QJYDSID')
-                Cookies.set('QJYDSID', QJYDSID, { expires: 7 })
+                Cookies.set('QJYDSID', QJYDSID, { expires: 30 })
 
                 //保存当前登陆手机号码
                 localStorage.setItem('phone', phone.value)
@@ -114,8 +115,8 @@
             //loc.lng = 119.27675861439648
             //loc.lat = 42.04732987671876
             //签到
-            let result = await sign(loc.lng, loc.lat, crsfToken)
-            result.status ? alert('签到成功') : displayMessage(result)
+            let result = await sign(loc.lng, loc.lat, crsfToken)           
+            result.status ? saveHistory() && alert('签到成功') : displayMessage(result)
         } else {
             displayMessage(tokenRes)
         }
@@ -188,6 +189,31 @@
     }
 
     init()
+
+    function saveHistory(){
+        let dataStr = localStorage.getItem('history'),
+            data = dataStr ? JSON.parse(dataStr) : []
+
+        if(!Array.isArray(data)){
+            data = []
+        }
+
+        let d = new Date(), 
+            date = d.toLocaleDateString(),
+            time = d.toLocaleTimeString()
+            dList = data.find(v=>v.date === date) 
+            if(dList){
+                dList.records.unshift(time)
+            }else{
+                data.unshift({
+                    date,
+                    records:[time]
+                })
+            }
+
+            localStorage.setItem('history',JSON.stringify(data.slice(0,180)))
+            return true
+    }
 
     //博彦科技大厦 116.289448,40.054959
     //116.27702103214757,40.04737826867027
