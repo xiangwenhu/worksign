@@ -14,19 +14,35 @@
     </div>
     <div>
 
-        <h3 style="display:inline">用户信息：</h3> <input type="button" id='btnLogout' style="display:none" value="登出">
-        <a href="history.html" style="float:right">历史记录</a> 
-        <p>登陆状态信息：<span id='rec_status'></span>|<span id='rec_phone'></span></p>
-        <p>用户位置信息:<span id='rec_loc'></span>|<span id='rec_geoLoc'></span><a href='/point.html' style="padding-left:5px;text-decoration: none;">更改位置</a></p>
+        <h3 style="display:inline">用户信息：</h3>
+        <input type="button" id='btnLogout' style="display:none" value="登出">
+        <a href="history.html" style="float:right">历史记录</a>
+        <p>登陆状态信息：
+            <span id='rec_status'></span>|
+            <span id='rec_phone'></span>
+        </p>
+        <p>用户位置信息:
+            <span id='rec_loc'></span>|
+            <span id='rec_geoLoc'></span>
+            <a href='/point.html' style="padding-left:5px;text-decoration: none;">更改位置</a>
+        </p>
     </div>
     <div style="display:none" id='loginZone'>
         <p>登陆</p>
-        <p>Phone:<input id='phone' value='' /><input type="button" id='btnSendSMS' value="发送Code"></p>
-        <p>Code :<input id='code' maxlength="6" /><input type="button" id='btnLogin' value="登陆"></p>
+        <p>Phone:
+            <input id='phone' value='' />
+            <input type="button" id='btnSendSMS' value="发送Code">
+        </p>
+        <p>Code :
+            <input id='code' maxlength="6" />
+            <input type="button" id='btnLogin' value="登陆">
+        </p>
     </div>
 
 
-    <p><input type="button" value="签到" id='btnSign' disabled></p>
+    <p>
+        <input type="button" value="签到" id='btnSign' disabled>
+    </p>
 
 
 </body>
@@ -34,8 +50,25 @@
 <script src="api.js"></script>
 <script src="pointTran.js"></script>
 
+
+<script src="script/core.3.1.9.min.js"></script>
+<script src="script/enc-base64.3.1.9.min.js"></script>
+<script src="script/sha1.3.1.9.min.js"></script>
+<script src="script/hmac.3.1.9.min.js"></script>
+
 <script>
-    let code_id /* sms code_id*/, crsfToken /* crsf Token */
+    var CryptoJS = getCore();
+    addBase64(CryptoJS)
+    addHmacSHA1(CryptoJS)
+    AddHMAC(CryptoJS)()
+    // OUHmF5GZBQ5CTpszAP5SEHEOh2o=
+    //var c = "longitude=114.1095054086529&latitude=22.39643630535413&accuracy=1999",
+    //    u = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(c, "xrxs&qjyd"));
+    // console.log(u)
+</script>
+
+<script>
+    let code_id /* sms code_id*/ , crsfToken /* crsf Token */
 
     //发送验证
     btnSendSMS.addEventListener('click', async () => {
@@ -52,13 +85,15 @@
         try {
             let result = await login(phone.value, code.value, code_id)
             if (result.status) {
-                loginZone.style.display = 'none'  //隐藏登陆区域
+                loginZone.style.display = 'none' //隐藏登陆区域
                 btnSign.removeAttribute('disabled') //允许打卡
 
                 //更新cookie过期时间，设置7天过期
                 let QJYDSID = Cookies.get('QJYDSID')
                 Cookies.remove('QJYDSID')
-                Cookies.set('QJYDSID', QJYDSID, { expires: 30 })
+                Cookies.set('QJYDSID', QJYDSID, {
+                    expires: 30
+                })
 
                 //保存当前登陆手机号码
                 localStorage.setItem('phone', phone.value)
@@ -115,7 +150,7 @@
             //loc.lng = 119.27675861439648
             //loc.lat = 42.04732987671876
             //签到
-            let result = await sign(loc.lng, loc.lat, crsfToken)           
+            let result = await sign(loc.lng, loc.lat, crsfToken)
             result.status ? saveHistory() && alert('签到成功') : displayMessage(result)
         } else {
             displayMessage(tokenRes)
@@ -146,6 +181,7 @@
 
     //获取经纬度
     let tran = getTrans()
+
     function getGeoLocation() {
         let lng = localStorage.getItem('lng'),
             lat = localStorage.getItem('lat'),
@@ -162,11 +198,11 @@
     //设置登陆状态，手机号码，经纬度等信息
     function setPanelInfo() {
         var qjydsid = getCookie('QJYDSID')
-        rec_status.innerText = qjydsid ? '已登陆' : '未登录'   //登陆状态
+        rec_status.innerText = qjydsid ? '已登陆' : '未登录' //登陆状态
         rec_phone.innerText = localStorage.getItem('phone') || '' //登陆的手机号码
-        rec_loc.innerText = localStorage.getItem('loc') || ''     //当前保存的地址
-        rec_geoLoc.innerText = (localStorage.getItem('lng') || '') + ',' + (localStorage.getItem('lat') || '')  //当前保存的经纬度信息
-        btnLogout.style.display = qjydsid ? 'inline' : 'none'  //登出按钮
+        rec_loc.innerText = localStorage.getItem('loc') || '' //当前保存的地址
+        rec_geoLoc.innerText = (localStorage.getItem('lng') || '') + ',' + (localStorage.getItem('lat') || '') //当前保存的经纬度信息
+        btnLogout.style.display = qjydsid ? 'inline' : 'none' //登出按钮
     }
 
 
@@ -190,35 +226,34 @@
 
     init()
 
-    function saveHistory(){
+    function saveHistory() {
         let dataStr = localStorage.getItem('history'),
             data = dataStr ? JSON.parse(dataStr) : []
 
-        if(!Array.isArray(data)){
+        if (!Array.isArray(data)) {
             data = []
         }
 
-        let d = new Date(), 
+        let d = new Date(),
             date = d.toLocaleDateString(),
             time = d.toLocaleTimeString()
-            dList = data.find(v=>v.date === date) 
-            if(dList){
-                dList.records.unshift(time)
-            }else{
-                data.unshift({
-                    date,
-                    records:[time]
-                })
-            }
+        dList = data.find(v => v.date === date)
+        if (dList) {
+            dList.records.unshift(time)
+        } else {
+            data.unshift({
+                date,
+                records: [time]
+            })
+        }
 
-            localStorage.setItem('history',JSON.stringify(data.slice(0,180)))
-            return true
+        localStorage.setItem('history', JSON.stringify(data.slice(0, 180)))
+        return true
     }
 
     //博彦科技大厦 116.289448,40.054959
     //116.27702103214757,40.04737826867027
-   //{longitude: 116.27702103214757, latitude: 40.04737826867027}
-
+    //{longitude: 116.27702103214757, latitude: 40.04737826867027}
 </script>
 
 </html>
