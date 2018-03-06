@@ -51,21 +51,34 @@
 <script src="pointTran.js"></script>
 
 
-<script src="script/core.3.1.9.min.js"></script>
-<script src="script/enc-base64.3.1.9.min.js"></script>
-<script src="script/sha1.3.1.9.min.js"></script>
-<script src="script/hmac.3.1.9.min.js"></script>
+
+<script src="script/react.min.15.4.2.js"></script>
+<script src="script/react-dom.min.15.4.2.js"></script>
+<script src="script/react-router.min.2.8.1.js"></script>
+<script src="script/redux.min.3.6.0.js"></script>
+
+<script src="script/moment.min.2.18.1.js"></script>
+<script src="script/moment-with-zh-cn.2.18.1.js"></script>
+<script src="script/crypto-js.js"></script>
+
+
+<script src="script/vendor.js"></script>
+<script src="script/app.js"></script>
+
 
 <script>
-    var CryptoJS = getCore();
-    addBase64(CryptoJS)
-    addHmacSHA1(CryptoJS)
-    AddHMAC(CryptoJS)()
-    // OUHmF5GZBQ5CTpszAP5SEHEOh2o=
-    //var c = "longitude=114.1095054086529&latitude=22.39643630535413&accuracy=1999",
-    //    u = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(c, "xrxs&qjyd"));
-    // console.log(u)
+    // 初始化全局变量
+    localStorage.setItem('xrxsZhiChiParams', JSON.stringify({
+        "partnerId": "a8633497bd2411e68d9500163e2ecffb"
+    }))
+    window.__oneApmKey__ = "[1d4IUc>3("
+    window.__tingyunLoaction__ = JSON.parse(localStorage.xrxsZhiChiParams || "{}").partnerId || "Yf&*#";
+    CryptoJS.a = CryptoJS.enc.Base64
+    CryptoJS.c = function (message, key) {
+        return new CryptoJS.algo.HMAC.init(CryptoJS.algo.SHA1, key).finalize(message);
+    }
 </script>
+
 
 <script>
     let code_id /* sms code_id*/ , crsfToken /* crsf Token */

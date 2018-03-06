@@ -48,7 +48,7 @@ resultDemo = {
     "message": "登录成功",
     "status": true,
     "data": {
-        "sessionId": "bf3e386528ad40d2a01a5ae49ce1b242",
+        "sessionId": "bf3e386528ad40",
         "url": "/index"
     }
 }
@@ -70,7 +70,7 @@ resultDemo = {
     "message": "获取成功",
     "status": true,
     "data": {
-        "csrf": "OTk0ZDg4MGINX1ICCA8FVQ4KDQcMAQFVAV0HBQ8NBwYOAARQD1tUUg==",
+        "csrf": "==",
         "skin": 4
     }
 }
@@ -84,9 +84,31 @@ resultDemo = {
 }
 
 //签到
+// app.sdsds.js 4428
+// "timestamp=1520250455999&accuracy=1999&latitude=22.396438205993736&longitude=114.10950785348682"
 async function sign(longitude, latitude, crsfToken) {
-    const c = "longitude=" + longitude + "&latitude=" + latitude + "&accuracy=" + 1999,
-        signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(c, "xrxs&qjyd"))
+
+    //key = "[!]+K.&`d"
+    //CryptoJS.algo.HMAC.   
+
+    const timestamp = Date.now(),
+        p1 = [{
+            longitude: longitude
+        }, {
+            latitude: latitude
+        }, {
+            accuracy: 1999
+        }, {
+            timestamp: timestamp
+        }],
+        p2 = {
+            a: "c0$=[Z#4s)",
+            overtimeCompensationRuleArray: ["无补偿", "调休假", "加班费"],
+            p: "[!]+K.&`d",
+            s: "N)&*,[!]("
+        },
+        p3 = CryptoJS;
+    signature = window.tdefault(p1, p2, p3)
 
     return fetch('/api/attendance/ajax-sign', {
         method: 'POST',
@@ -102,7 +124,8 @@ async function sign(longitude, latitude, crsfToken) {
             longitude,
             latitude,
             signature,
-            accuracy: 1999
+            accuracy: 1999,
+            timestamp: timestamp
         })
     }).then(res => res.json())
 }
