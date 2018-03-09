@@ -8,7 +8,7 @@
 <ul>
    <li>npm install</li>
    <li>node app.js</li>
-   <li>浏览器打开 http://localhost:8003</li>
+   <li>浏览器打开 http://localhost:8007</li>
 </ul>
 
 <h3>功能描述</h3>
@@ -21,3 +21,21 @@
    <li>cookie过期跳转登陆</li>
    <li>支持移动端</li>
 </ul>
+<h3>
+   因为薪人薪事3月初改版后，本程序下载之后可能不能完全适用所有单位。
+   可能需要修改如下参数
+   ```js
+      // 初始化全局变量
+    localStorage.setItem('xrxsZhiChiParams', JSON.stringify({
+        "partnerId": "a8633497bd2411e68d9500163e2ecffb"
+    }))
+    window.__oneApmKey__ = "[1d4IUc>3("
+    window.__tingyunLoaction__ = JSON.parse(localStorage.xrxsZhiChiParams || "{}").partnerId || "Yf&*#";
+    CryptoJS.a = CryptoJS.enc.Base64
+    CryptoJS.c = function (message, key) {
+        return new CryptoJS.algo.HMAC.init(CryptoJS.algo.SHA1, key).finalize(message);
+    }
+   ```
+   如有问题，可以联系作者 xiangwenhu@hotmail.com, 微信dirge-cloud
+</h3>
+
