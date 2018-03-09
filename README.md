@@ -23,9 +23,10 @@
 </ul>
 <h3>
    因为薪人薪事3月初改版后，本程序下载之后可能不能完全适用所有单位。
-   可能需要修改如下参数
+   可能需要修改如下参数 
+ </h3>
    ```js
-      // 初始化全局变量
+     初始化全局变量
     localStorage.setItem('xrxsZhiChiParams', JSON.stringify({
         "partnerId": "a8633497bd2411e68d9500163e2ecffb"
     }))
@@ -37,5 +38,5 @@
     }
    ```
    如有问题，可以联系作者 xiangwenhu@hotmail.com, 微信dirge-cloud
-</h3>
+
 
